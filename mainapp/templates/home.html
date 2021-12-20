@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ReStore</title>
+    <style>
+        .btn-outline-light{
+            margin-right: 10px;
+        }
+        a.text {
+            text-decoration: none;
+            color: aliceblue;
+
+        }
+
+        header{
+            background-color: rgb(238,245,250);
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+        }
+
+        @keyframes spin {
+            from {transform:rotate(0deg);}
+            to {transform:rotate(-360deg);}
+        }
+
+        .img-responsive{
+            animation: spin 300s linear 0s infinite;
+        }
+
+
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand" href="{% url 'base' %}">ReStore</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'base' %}">Home</a></li>
+                        {% for category in categories %}
+                            <li class="nav-item"><a class="nav-link" href="{{ category.get_absolute_url }}">{{ category.name }}</a></li>
+                        {% endfor %}
+
+                        <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+
+                    </ul>
+                    <form class="d-flex">
+
+
+                        {% if not request.user.is_authenticated %}
+
+
+                            <button class="btn btn-outline-light" type="submit" >
+                                <a href="{% url 'login' %}" class="text">
+                                <i class="bi-cart-fill me-1"></i>
+                                Авторизация
+                                </a>
+
+                            </button>
+                        <button class="btn btn-outline-light" type="submit" >
+                        <a href="{% url 'registration' %}" class="text">
+                            <i class="bi-cart-fill me-1"></i>
+                            Регистрация
+                        </a>
+                        </button>
+                            {% else %}
+                            <button class="btn btn-outline-light" type="submit">
+                            <i class="bi-cart-fill me-1"></i>
+                            <a href="{% url 'cart' %}" class="text">
+                            Корзина
+                            </a>
+                            <span class="badge bg-light text-dark ms-1 rounded-pill">{{ cart.products.count }}</span>
+                        </button>
+
+                                <button class="btn btn-outline-light" type="submit" >
+                                 <a href="{% url 'profile' %}" class="text">
+                                <i class="bi-cart-fill me-1"></i>
+                                Здарвствуйте, {{ request.user.username }}
+                                 </a>
+                                </button>
+                                <button class="btn btn-outline-light" type="submit" >
+                                <a href="{% url 'logout' %}" class="text">
+                                <i class="bi-cart-fill me-1"></i>
+                                    Выйти
+                                </a>
+                                </button>
+                         {% endif %}
+                    </form>
+                </div>
+            </div>
+        </nav>
+    {% block content %}
+<header class="py-5">
+            <div class="container px-4 px-lg-4 my-3 mt-2">
+                <div class="text-center text-dark">
+                    <h1 class="display-4 fw-bolder">Выберите свое устройство</h1>
+
+                    <div style="margin-top: 20px" class="row">
+
+                        <div class="col-lg-4 col-md-4 col-xs-4 thumb">
+
+
+                            <img style="width: 95%; height: 96%" class="img-responsive" src="media/Bezymyanny_00000.png" alt="">
+
+
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-xs-4 thumb">
+
+                            <img style="width: 87%; height: 96%" class="img-responsive" src="media/shadow_00000.png" alt="">
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-xs-4 thumb">
+
+                        <img style="width: 85%; height: 95%" class="img-responsive" src="media/3y_00000.png" alt="">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </header>
+        <!-- Section-->
+        <section class="py-5">
+
+
+            <div class="container">
+  <div class="row g-2">
+    <div class="col-6">
+      <div style="background-color: #fbfbfd; border-radius: 30px" class="p-3 border bg-light">
+
+          <figure style="text-align: center">
+          <h2 style="font-weight: 700">iPhone 13 Pro</h2>
+              <h3>Просто. Нереально.</h3>
+          <img style="width: 70%; height: 70%" src="media/opacity13_00000.png">
+          </figure>
+
+        </div>
+    </div>
+    <div class="col-6">
+      <div  style="background-color: #fbfbfd; border-radius: 30px" class="p-3 border bg-light">
+          <figure style="text-align: center">
+          <h2 style="font-weight: 700">AirPods</h2>
+              <h3>Пространственное аудио.</h3>
+          <img style="width: 70%; height: 70%" src="media/pods_00000.png">
+          </figure>
+
+
+        </div>
+    </div>
+    <div class="col-6">
+      <div style="background-color: #fbfbfd; border-radius: 30px" class="p-3 border bg-light">
+
+        <figure style="text-align: center">
+          <h2 style="font-weight: 700">MacBook</h2>
+              <h3>Сила для профессионалов.</h3>
+          <img style="width: 70%; height: 70%" src="media/mac_2_00000.png">
+          </figure>
+
+        </div>
+    </div>
+    <div class="col-6">
+      <div style="background-color: #fbfbfd; border-radius: 30px" class="p-3 border bg-light">
+
+          <figure style="text-align: center">
+          <h2 style="font-weight: 700"> Watch</h2>
+              <h3>Самый большой дисплей.</h3>
+          <img style="width: 70%; height: 70%" src="media/watch_00000.png">
+          </figure>
+
+
+        </div>
+    </div>
+  </div>
+</div>
+
+    </section>
+    <div style = "background-color: #38253d; text-align: center; margin-bottom: 20px" class="container-fluid">
+    <h3 style="color: aliceblue; padding-top: 15px">iPhone 13</h3>
+    <h4 style="color: #ffbbec">Твоя новая суперсила.</h4>
+    <img style="width: 47%; height: 56%" src="media/13iphone_00000.png">
+
+    </div>
+
+{% endblock content %}
+    <footer class="py-5 bg-dark">
+        <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p></div>
+    </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
+
+</body>
+</html>

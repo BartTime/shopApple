@@ -1,0 +1,160 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>ReStore</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+</head>
+<style>
+    body {
+      padding-top: 56px;
+    }
+    btn-outline-light{
+            margin-right: 20px;
+        }
+    a.text {
+        text-decoration: none;
+        color: aliceblue;
+        }
+</style>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'base' %}">ReStore</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'base' %}">Home</a></li>
+                        {% for category in categories %}
+                            <li class="nav-item"><a class="nav-link" href="{{ category.get_absolute_url }}">{{ category.name }}</a></li>
+                        {% endfor %}
+                        <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+
+                    </ul>
+                    <form class="d-flex">
+
+
+
+                        {% if not request.user.is_authenticated %}
+
+
+                            <button style="margin-right: 10px;" class="btn btn-outline-light" type="submit" >
+                                <a href="{% url 'login' %}" class="text">
+                                <i class="bi-cart-fill me-1"></i>
+                                Авторизация
+                                </a>
+
+                            </button>
+                        <button style="margin-right: 10px;" class="btn btn-outline-light" type="submit" >
+                            <a href="{% url 'registration' %}" class="text">
+                            <i class="bi-cart-fill me-1"></i>
+                            Регистрация
+                            </a>
+                        </button>
+                            {% else %}
+                            <button style="margin-right: 10px;" class="btn btn-outline-light" type="submit">
+                            <i class="bi-cart-fill me-1"></i>
+                            <a href="{% url 'cart' %}" class="text">
+                            Корзина
+                            </a>
+                            <span class="badge bg-light text-dark ms-1 rounded-pill">{{ cart.products.count }}</span>
+                            </button>
+                                <button style="margin-right: 10px;" class="btn btn-outline-light" type="submit" >
+                                 <a href="{% url 'profile' %}" class="text">
+                                <i class="bi-cart-fill me-1"></i>
+                                Здравствуйте, {{ request.user.username }}
+                                 </a>
+                                </button>
+                                <button class="btn btn-outline-light" type="submit" >
+                                <a href="{% url 'logout' %}" class="text">
+                                <i class="bi-cart-fill me-1"></i>
+                                    Выйти
+                                </a>
+                                </button>
+                         {% endif %}
+                    </form>
+                </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  <div class="container">
+
+    <div class="row">
+
+      <div class="col-lg-3 mt-5">
+
+      {% block productfilter %}
+      {% endblock productfilter %}
+      </div>
+      <!-- /.col-lg-3 -->
+
+      <div class="col-lg-9">
+        {% block content %}
+        {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                <strong>{{ message }}</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="row mt-5">
+          {% for product in products %}
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100">
+              <a href="{{ product.get_absolute_url }}"><img class="card-img-top" src="{{ product.image.url }}" alt=""></a>
+              <div class="card-body">
+                <h4 class="card-title">
+                  <a href="{{ product.get_absolute_url }}">{{ product.title }}</a>
+                </h4>
+                <h5>{{ product.price }} руб.</h5>
+                <a href="{% url 'add_to_cart' slug=product.slug %}">
+                  <button class="btn btn-danger">Добавить в корзину</button>
+                </a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        <!-- /.row -->
+      {% endblock content %}
+      </div>
+      <!-- /.col-lg-9 -->
+
+    </div>
+    <!-- /.row -->
+
+  </div>
+  <!-- /.container -->
+
+  <!-- Footer -->
+  <footer class="py-5 bg-dark">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; Your Website 2020</p>
+    </div>
+    <!-- /.container -->
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
