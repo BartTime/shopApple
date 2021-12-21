@@ -83,8 +83,14 @@ WSGI_APPLICATION = 'shopapple.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        #'ENGINE': 'django.db.backends.sqlite3',
+        #'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'd5v3d2atr7p0m8',
+        'HOST': 'ec2-54-157-12-250.compute-1.amazonaws.com',
+        'PORT': 5432,
+        'USER': 'ailtolfpzdtopz',
+        'PASSWORD': '8f7e1e93c7a51c0d944f491447f0d518e933b77d1c2398ed40002c7b6f3d33b7',
     }
 }
 
